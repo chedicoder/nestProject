@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TodoEntity } from '../entities/TodoEntity.entity';
 import { StatusEnum } from '../entities/todos.enum';
-import { UpdateTodoDto } from '../Dto/ToDo_Dto.dto';
+import { Add_ToDo_Dto } from '../Dto/Add_ToDo_Dto.dto';
+import { UpdateTodoDto } from '../Dto/Update_ToDo_Dto.dto';
 
 @Injectable()
 export class TodoService {
@@ -12,7 +13,7 @@ export class TodoService {
     private  todoRepository: Repository<TodoEntity>,
   ) {}
 
-  async addTodo(todo: UpdateTodoDto): Promise<UpdateTodoDto> {
+  async addTodo(todo: Add_ToDo_Dto): Promise<Add_ToDo_Dto> {
     return this.todoRepository.save(todo);
   }
 
@@ -49,7 +50,7 @@ export class TodoService {
     return todo;
   }
 
-  async searchTodos(name: string, description: string, status: string): Promise<TodoEntity[]> {
+  async searchTodos(name?: string, description?: string, status?: string): Promise<TodoEntity[]> {
     const query = this.todoRepository.createQueryBuilder('todo');
     if (name) {
       query.andWhere('todo.name LIKE :name', { name: `%${name}%` });
@@ -61,7 +62,8 @@ export class TodoService {
       query.andWhere('todo.status = :status', { status });
     }
     return query.getMany();
-  }
+}
+
 
   async getTodoCountByStatus(status: StatusEnum): Promise<number> {
     return this.todoRepository.count({ where: { status } });

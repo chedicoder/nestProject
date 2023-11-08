@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, Query, ValidationPipe, UsePipes } from '@nestjs/common';
 import { TodoService } from '../services/Todo.service';
 import { TodoEntity } from '../entities/TodoEntity.entity';
 import { StatusEnum } from '../entities/todos.enum';
-import { UpdateTodoDto } from '../Dto/ToDo_Dto.dto';
+import { Add_ToDo_Dto } from '../Dto/Add_ToDo_Dto.dto';
+import { UpdateTodoDto } from '../Dto/Update_ToDo_Dto.dto';
 
 @Controller('todos')
+@UsePipes(new ValidationPipe())
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
@@ -19,10 +21,10 @@ export class TodoController {
   }
 
   @Post()
-  addTodo(@Body() todo: UpdateTodoDto): Promise<UpdateTodoDto> {
+  addTodo(@Body() todo: Add_ToDo_Dto): Promise<Add_ToDo_Dto> {
     return this.todoService.addTodo(todo);
   }
-
+//PUT remplace entièrement l'entite, tandis que PATCH applique des modifications partielles à l'entite
   @Put(':id')
   updateTodo(@Param('id') id: number, @Body() todo: UpdateTodoDto): Promise<UpdateTodoDto> {
     return this.todoService.updateTodo(id, todo);

@@ -8,9 +8,8 @@ export class TodoEntity {
   id: number;
   // id: string= uuidv4(); si l'id est string on peut utiliser uuidv4 
 
-  @Column() 
+  @Column()
   name: string;
-  
 
   @Column()
   description: string;
@@ -19,6 +18,8 @@ export class TodoEntity {
     update:false
   })
   createdAt: Date;
+
+//updatedAt et deletedAt sont deux champs soient automatiquement gérés par TypeOrm.
 
   @UpdateDateColumn()
   updatedAt: Date;
